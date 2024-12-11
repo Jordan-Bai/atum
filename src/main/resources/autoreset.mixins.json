@@ -12,6 +12,7 @@
     "MoreOptionsDialogMixin",
     "OptionsScreenMixin",
     "TitleScreenMixin",
+    "EntryMixin",
     "hotkey.GameOptionsMixin",
     "hotkey.KeyBindingAccessor",
     "hotkey.KeyboardMixin",

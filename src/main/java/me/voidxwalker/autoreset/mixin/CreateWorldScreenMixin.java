@@ -1,6 +1,8 @@
 package me.voidxwalker.autoreset.mixin;
 
 import me.voidxwalker.autoreset.*;
+
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.world.*;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.world.Difficulty;
@@ -60,18 +62,27 @@ public abstract class CreateWorldScreenMixin {
             }
             this.difficulty = difficulty;
             this.safeDifficulty = difficulty;
-            if (Atum.seed == null || Atum.seed.isEmpty()) {
+            MinecraftClient client = MinecraftClient.getInstance();
+            if (Atum.worldName == null || Atum.worldName.isEmpty() || client.getLevelStorage().levelExists(Atum.worldName)) {
+                Atum.backupAttempts++;
+            } if (Atum.seed == null || Atum.seed.isEmpty()) {
                 Atum.rsgAttempts++;
             } else {
                 Atum.ssgAttempts++;
             }
 
             Atum.saveProperties();
-            levelNameField.setText((Atum.seed == null || Atum.seed.isEmpty()) ? "Random Speedrun #" + Atum.rsgAttempts : "Set Speedrun #" + Atum.ssgAttempts);
-            ((IMoreOptionsDialog) moreOptionsDialog).atum$setGeneratorType(GeneratorTypeAccessor.getVALUES().get(Atum.generatorType));
-            ((IMoreOptionsDialog) moreOptionsDialog).atum$setGenerateStructure(Atum.structures);
-            ((IMoreOptionsDialog) moreOptionsDialog).atum$setGenerateBonusChest(Atum.bonusChest);
-            createLevel();
+            if (Atum.worldName == null || Atum.worldName.isEmpty() || client.getLevelStorage().levelExists(Atum.worldName)) {
+                levelNameField.setText("Backup run #" + Atum.backupAttempts);
+
+            }
+            else {
+                levelNameField.setText((Atum.seed == null || Atum.seed.isEmpty()) ? "Random Speedrun #" + Atum.rsgAttempts : "Set Speedrun #" + Atum.ssgAttempts);
+                ((IMoreOptionsDialog) moreOptionsDialog).atum$setGeneratorType(GeneratorTypeAccessor.getVALUES().get(Atum.generatorType));
+                ((IMoreOptionsDialog) moreOptionsDialog).atum$setGenerateStructure(Atum.structures);
+                ((IMoreOptionsDialog) moreOptionsDialog).atum$setGenerateBonusChest(Atum.bonusChest);
+                createLevel();
+            }
         }
     }
 }

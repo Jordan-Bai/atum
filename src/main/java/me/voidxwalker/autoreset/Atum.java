@@ -18,11 +18,13 @@ public class Atum implements ModInitializer {
     public static boolean isRunning = false;
     public static Logger LOGGER = LogManager.getLogger();
 
+    public static String worldName = "";
     public static String seed = "";
     public static int difficulty = 1;
     public static int generatorType = 0;
     public static int rsgAttempts;
     public static int ssgAttempts;
+    public static int backupAttempts;
     public static boolean structures = true;
     public static boolean bonusChest = false;
     static Map<String, String> extraProperties = new LinkedHashMap<>();
@@ -39,6 +41,10 @@ public class Atum implements ModInitializer {
     public static void createNewWorld() {
         isRunning = true;
         shouldReset = false;
+
+        if (worldName == null || worldName.isEmpty() || MinecraftClient.getInstance().getLevelStorage().levelExists(Atum.worldName)) {
+            // WorldListWidget.Recreate
+        }
 
         MinecraftClient.getInstance().openScreen(new CreateWorldScreen(null));
     }
