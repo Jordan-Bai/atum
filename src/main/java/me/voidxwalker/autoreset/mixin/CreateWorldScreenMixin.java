@@ -62,27 +62,18 @@ public abstract class CreateWorldScreenMixin {
             }
             this.difficulty = difficulty;
             this.safeDifficulty = difficulty;
-            MinecraftClient client = MinecraftClient.getInstance();
-            if (Atum.worldName == null || Atum.worldName.isEmpty() || client.getLevelStorage().levelExists(Atum.worldName)) {
-                Atum.backupAttempts++;
-            } if (Atum.seed == null || Atum.seed.isEmpty()) {
+            if (Atum.seed == null || Atum.seed.isEmpty()) {
                 Atum.rsgAttempts++;
             } else {
                 Atum.ssgAttempts++;
             }
 
             Atum.saveProperties();
-            if (Atum.worldName == null || Atum.worldName.isEmpty() || client.getLevelStorage().levelExists(Atum.worldName)) {
-                levelNameField.setText("Backup run #" + Atum.backupAttempts);
-
-            }
-            else {
-                levelNameField.setText((Atum.seed == null || Atum.seed.isEmpty()) ? "Random Speedrun #" + Atum.rsgAttempts : "Set Speedrun #" + Atum.ssgAttempts);
-                ((IMoreOptionsDialog) moreOptionsDialog).atum$setGeneratorType(GeneratorTypeAccessor.getVALUES().get(Atum.generatorType));
-                ((IMoreOptionsDialog) moreOptionsDialog).atum$setGenerateStructure(Atum.structures);
-                ((IMoreOptionsDialog) moreOptionsDialog).atum$setGenerateBonusChest(Atum.bonusChest);
-                createLevel();
-            }
+            levelNameField.setText((Atum.seed == null || Atum.seed.isEmpty()) ? "Random Speedrun #" + Atum.rsgAttempts : "Set Speedrun #" + Atum.ssgAttempts);
+            ((IMoreOptionsDialog) moreOptionsDialog).atum$setGeneratorType(GeneratorTypeAccessor.getVALUES().get(Atum.generatorType));
+            ((IMoreOptionsDialog) moreOptionsDialog).atum$setGenerateStructure(Atum.structures);
+            ((IMoreOptionsDialog) moreOptionsDialog).atum$setGenerateBonusChest(Atum.bonusChest);
+            createLevel();
         }
     }
 }
